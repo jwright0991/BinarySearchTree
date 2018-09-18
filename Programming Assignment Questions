@@ -1,0 +1,65 @@
+a and c) My BinarySearchTree class is made up objects of the TreeNode class. I designed each tree node to have an "isEvenSum" boolean value and an "isEven" boolean value. For a given node N,N's IsEvenSum value is true when the sum of all the node values that are descendants of a N and N itself is even, and false when the sum is odd. The program evenSumRange.py calculates whether the sum of all the nodes of a tree within a certain range is even or odd by finding the first node in the tree that is within the range. After finding the first node in the range, which I'll refer to as newRoot, it calls a function that counts the "number of odd nodes" in the left subtree of newRoot. The function does not actually count the TOTAL number of odd nodes though because if it encounters a node that is greater than the start of the range, it checks whether it's right child has an even sum or odd sum by referencing the right child's isEvenSum attribute. This way, the function call only travels one path from the root to a leaf node and runs in Θ(h) time because the longs a path can be is of length h. The program then calls another nearly identical function to count the odd nodes in the right child of newRoot, which has the same Θ(h) runtime. The program increments the count of the odd nodes if the newRoot is odd and if the number of odd trees is odd, then the sum is odd, otherwise the sum is even. 
+
+pseudocode
+
+firstRootInRange(rootNode,start,end):
+	node = rootNode
+	if node == null:
+		return null
+	else:
+		if start <= node.data <= end:
+			return node
+		else if node.data < start:
+			return firstRootInRange(rootNode.right, start, end)
+		else if node.data > end:
+			return firstRootInRange(rootNode.left, start, end)
+treeCountOddGE(root, start): 
+//root is the "new root" or the first node found to be in the range
+	countOdd = 0
+	node = root.left
+	while node != null:
+		if node.data >= start:
+			if !node.isEven then countOdd++
+			if node.right != null and !node.right.isEven then countOdd++
+			node = node.left
+		else:
+			node = node.right
+				
+	return countOdd
+treeCountOddLE is almost identical with start replaced by end, the if statement, "if node.data >= start" is changed to "<= end" and the assignment of node is switched to node = node.right in the if block and the else block it is changed to node = node.left.
+
+treeCountOddInRange(tree,start,end):
+	if tree.root == null:
+		return 0
+	countOdd = 0
+	if node != None:
+		if !node.isEven:
+			countOdd++
+		countOdd+= treeCountOddGE(node, start) + treeCountOddLE(node, end)
+	return countOdd
+
+b) My insert function has two parameters(besides self), node and parent. Node is the node being added and parent is its parent node already in the tree. The parent node is found by calling the function locateParentUpdateSize on the node that is being added. This function starts at the root of the tree and descends a single path along the tree looking for the parent, which runs in Θ(h) time. If the tree is empty, the function returns None. The function also adjusts the size of the tree and the isEvenSum value of every node along the path from the root to the parent of the node about to be added. The insert function makes the node the root if the tree is empty, or makes the node's parent attribute set to its parent. If the node's data is less than the parent's data it makes the node the parent's left child or the right child otherwise. So insert itself actually takes constant time, but the call to locateParentUpdateSize that is required to find the node's parent takes Θ(h), so the entire insertion process takes Θ(h).
+
+Pseudocode
+#code for updating size and isEvenSum fields omitted
+locateParent(self, child):
+	result = null
+	node = self.root
+	while node != null
+		if child.data < node.data:
+			node = node.leftChild
+		else:
+			node = node.rightChild
+	return result
+insert(self,node,parent):
+	if self.root == null
+		self.root = node
+	else:
+		node.parent = parent
+		if node.data < parent.data
+			parent.leftChild = node
+		else:
+			parent.rightChild = node
+
+
+

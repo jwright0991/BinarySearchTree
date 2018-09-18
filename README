@@ -1,0 +1,9 @@
+To run evenSumRange.py, enter the command below.
+
+python evenSumRange.py <data file> <range file> 
+
+If the two additional command-line arguments are not provided, the program will quit immediately and give an error message.
+
+In order for the program to run correctly, the files evenSumRange.py, BinarySearchTree.py, and TreeNode.py must be in the current directory along with the data/range files that are 
+being provided as command-line arguments.
+ 
